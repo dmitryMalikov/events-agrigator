@@ -1,3 +1,3 @@
-module.exports = function modules (app) {
-    app.use('/data', require('./modules/aggregator/index'));
-};
+var aggregator = require('./aggregator/index');
+var store = require('./events_store/index');
+module.exports = store;
