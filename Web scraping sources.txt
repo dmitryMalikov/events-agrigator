@@ -1,0 +1,16 @@
+Web scraping sources:
+
+http://vk.com/absurdpabs
+http://vk.com/absurdpabs
+http://vk.com/typical_kiev
+http://vk.com/dakhdaughters_kyiv
+https://vk.com/dev/groups.get
+https://pragueoperatickets.com/opera-all-performances/aida-verdi-state-opera-prague/?p=33&l=2&id=190
+https://schema.org/MusicEvent
+https://developers.google.com/structured-data/events/performers?hl=en
+http://www.czechopera.cz/
+https://karabas.com/ua/
+http://parter.ua/ua/event/novyi_rik/3d_show_stb/vartovy_mriy.html
+http://www.worldticketshop.com/cities/london
+https://www.viennaclassic.com/en/salome-2014-74.html
+https://www.viennaclassic.com/en/oper/state-opera/program-tickets.html#eventid=47535
