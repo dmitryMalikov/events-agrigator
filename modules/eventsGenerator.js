@@ -24,15 +24,15 @@ exports.generateEvents = function() {
     rand = Math.floor(rand);
     return rand;
   }
-	for(var j = 0; j < 100; j++){
-		name = randomWord(7);
+	for(var j = 0; j < 10000; j++){
+		name = randomWord(3);
 		date = randomNumber(1, 30) + '.' + randomNumber(1, 12) + '.' + randomNumber(2016, 2020);
 		time = randomNumber(0, 23) + ':' + randomNumber(0, 59);
-		place = randomWord(9);
+		place = randomWord(3);
 		
 		events[name] = new Events(name, date, time, place);
 	}
 		return events;
-		
 	
 };
+
