@@ -1,5 +1,12 @@
 Web scraping sources:
 
+Implementations:
+http://parter.ua
+http://dou.ua/calendar/
+
+
+Options:
+
 http://vk.com/absurdpabs
 http://vk.com/absurdpabs
 http://vk.com/typical_kiev
