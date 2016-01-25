@@ -1,27 +1,66 @@
-// scrapper.js
-
 // modules===========
 var request = require('request'),
     mongoose = require('mongoose'),
-    RSVP = require('rsvp'),
     cheerio = require('cheerio');
 
-// configuration=====
+function getEventImage($){
+    var eventImage = $('img[src*="/img/item/"]').attr('src');
+    if (eventImage){
+        return eventImage;
+    }
+    else{
+        return "";
+    }
+};
 
-// database==========
-var scrapeEventPage = function(fullUrl){
+function getEventDescription($){
+    var eventDescription = $('p').text();
+    //console.log(eventDescription);
+    return eventDescription;
+};
+
+function getEventPrice($){
+    var eventPrice = $('tr:nth-child(3) > td[align="center"]').first().text();
+    return eventPrice;
+}
+
+function getEventTime($){
+    var eventTime = []
+    $('tr:nth-child(1) > td[align="center"]').each(function(){
+            var time = $(this).text();
+            eventTime.push(time);
+        });  
+    return eventTime
+}
+
+function scrapeEventPage(fullUrl){
     request(fullUrl,function(err,resp,body){
         if (!err && resp.statusCode == 200){
             var $ = cheerio.load(body,{
                 decodeEntities: false
             });
-            var eventTitle, eventLocation, eventDescription, eventTime, eventLink, eventImage;
+            var eventTitle, eventLocation, eventDescription, eventTime = [], 
+                eventLink, eventImage, eventPrice;
             var eventPage = $('td.center');
             eventLink = fullUrl;
             eventTitle = $( 'td.center > h1').text()//.replace(/<.*>/g, '. ');
             eventLocation = $('p[class="txt"]',eventPage).text();
-            //eventDescription = getEventDescription($);
-            //console.log("eventDescription",eventDescription);
+            eventImage = getEventImage($);
+            eventDescription = getEventDescription($);
+            eventTime = getEventTime($);
+            eventPrice = getEventPrice($);
+
+            var model = {
+                eventTitle: eventTitle,
+                eventLocation: eventLocation,
+                eventLink: eventLink,
+                eventDescription: eventDescription,
+                eventTime: eventTime,
+                eventPrice: eventPrice,
+                eventImage: eventImage
+            }
+
+            return model;
         }
         else{
             console.log("ERROR in scrapeEventPage");
@@ -29,17 +68,16 @@ var scrapeEventPage = function(fullUrl){
     });
 };
 
-var scrapeParterEvents = function(html,urls){
+function scrapeParterEvents(html,urls){
     console.log("var scrapeParterEvents");
     for (var i = 0; i < urls.length; i++){
         fullUrl = html + urls[i];
         scrapeEventPage(fullUrl);
-        //console.log("scrapeEventPage(fullUrl);",fullUrl);
     }
 }
 
-var getMainPageUrls = function(html){
-    var promise = new RSVP.Promise(function(resolve, reject) {
+function getMainPageUrls(html){
+    var promise = new Promise(function(resolve, reject) {
     console.log("scrapeMainPage");
     var url, fullUrl,
         urls = [];
@@ -77,23 +115,6 @@ var run = function(){
 
 
 /*
-var getEventImage = function($){
-    console.log("getEventImage");
-    var eventLink;
-};
-
-var getEventDescription = function($){
-    var eventDescription = $('p[class="txt"]',eventPage).next().text();
-    if (!eventDescription){
-        //console.log("Description is empty in "+fullUrl);
-        //var alternativeDesctipion = $(eventPage).html().replace(/<.*>/g, ' ');
-        var alternativeDesctipion = $(eventPage).text();
-        console.log(alternativeDesctipion);
-    }
-    return eventDescription;
-};
-
-
 
 
 */

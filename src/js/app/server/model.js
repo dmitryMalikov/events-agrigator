@@ -5,7 +5,7 @@ mongoose.connection.on('error', function() {
   console.error('MongoDB Connection Error. Make sure MongoDB is running.');
 });
 
-var EventsSchema = new mongoose.Schema({
+var EventSchema = new mongoose.Schema({
 	eventTitle: String, 
 	eventLocation: String, 
 	eventDescription: String, 
@@ -16,4 +16,4 @@ var EventsSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model('Events', EventsSchema);
+module.exports = mongoose.model('Events', EventSchema);
