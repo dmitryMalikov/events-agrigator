@@ -1,6 +1,6 @@
 // modules===========
 var request = require('request'),
-    mongoose = require('mongoose'),
+    Model = require('./model');
     cheerio = require('cheerio');
 
 function getEventImage($){
@@ -59,6 +59,14 @@ function scrapeEventPage(fullUrl){
                 eventPrice: eventPrice,
                 eventImage: eventImage
             }
+            console.log("scrapeEventPage",model);
+
+            var parterEvent = new Model(model);
+            parterEvent.save(function(err) {
+                if (err) {
+                    console.log('Database err saving: ' + url);
+                }
+            });
 
             return model;
         }
@@ -70,10 +78,15 @@ function scrapeEventPage(fullUrl){
 
 function scrapeParterEvents(html,urls){
     console.log("var scrapeParterEvents");
+    var modelArray = [];
     for (var i = 0; i < urls.length; i++){
         fullUrl = html + urls[i];
+        //var model = 
         scrapeEventPage(fullUrl);
+        //modelArray.push(model);
     }
+    //console.log("scrapeParterEvents",modelArray);
+    //return modelArray;
 }
 
 function getMainPageUrls(html){
@@ -100,21 +113,19 @@ function getMainPageUrls(html){
     return promise;
 };
 
-var run = function(){
+function run(){
     var html = 'http://parter.ua',
-        urls;
+        urls, events;
 
     getMainPageUrls(html).then(function(urlsArray) {
         console.log("promise call of urls",urlsArray.length);
         urls = urlsArray;
         scrapeParterEvents(html,urls);
+        //console.log(events);;
     }, function(error) {
       // handle errors
     });
-}();
+};
 
-
-/*
-
-
-*/
+run();
+//module.exports = run();

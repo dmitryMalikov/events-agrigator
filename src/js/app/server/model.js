@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/scraper');
+mongoose.connect('mongodb://localhost/scraper');
 mongoose.connection.on('error', function() {
   console.error('MongoDB Connection Error. Make sure MongoDB is running.');
 });
@@ -12,7 +12,7 @@ var EventSchema = new mongoose.Schema({
 	eventTime: Array, 
 	eventLink: String , 
 	eventPrice: String,
-	eventImage: String; //link to the image
+	eventImage: String //link to the image
 });
 
 
