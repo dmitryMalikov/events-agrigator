@@ -16,7 +16,8 @@ getMainPageUrls(html).then(function(allUrls) {
     allUrls.forEach(function(url){
     	var fullUrl = html + url;
     	console.log("start of model creation", fullUrl);
-    	var model = ParterScraper.init(fullUrl);
+    	var scraper = new ParterScraper();
+    	var model = scraper.scrapeEventPage(fullUrl)
     	console.log("model is created", model);
         var parterEvent = new Model(model);
         parterEvent.save(function(err) {
