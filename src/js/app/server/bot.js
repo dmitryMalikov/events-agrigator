@@ -3,20 +3,21 @@
 var Model = require('./model');
 var ParterScraper = require('./scrape-parter.js');
 var DouScraper = require('./scrape-dou.js');
+var request = require('request'),
+    cheerio = require('cheerio');
 
 //var parterEventUrls = []
 
 //function run(){
 var html = 'http://parter.ua';
 getMainPageUrls(html).then(function(allUrls) {
-    console.log("promise call of urls",urlsArray.length);
-    //parterEventUrls = allUrls;
-    //scrapeParterEvents(html,parterEventUrls);
-    console.log(allUrls);
+    console.log("promise call of urls",allUrls.length);
+    //console.log(allUrls);
     allUrls.forEach(function(url){
     	var fullUrl = html + url;
-    	//console.log(fullUrl);
-    	var model = ParterScraper.scrapeEventPage(fullUrl);
+    	console.log("start of model creation", fullUrl);
+    	var model = ParterScraper.init(fullUrl);
+    	console.log("model is created", model);
         var parterEvent = new Model(model);
         parterEvent.save(function(err) {
             if (err) {
@@ -25,12 +26,11 @@ getMainPageUrls(html).then(function(allUrls) {
         });
     })
 }, function(error) {
-// handle errors
+	console.log("error ", error);
 });
 
 
 function getMainPageUrls(html) {
-//function getMainPageUrls(html){
     var promise = new Promise(function(resolve, reject) {
     console.log("scrapeMainPage");
     var url, urls = [];
@@ -41,7 +41,7 @@ function getMainPageUrls(html) {
             url = $(this).find('a').attr('href');
             urls.push(url);
         });   
-        console.log("getMainPageUrls urls ",urls.length);
+        console.log("resolve, getMainPageUrls urls ",urls.length);
         resolve(urls);
     }
     else{

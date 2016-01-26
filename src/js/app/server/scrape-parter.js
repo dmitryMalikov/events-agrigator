@@ -1,14 +1,28 @@
 // modules===========
 var request = require('request'),
-    //del = require('./model');
     cheerio = require('cheerio');
+var EventEmitter = require('events').EventEmitter;
+var util = require('util');
 
-function ParterScraper(){
+function ParterScraper(url){
+    console.log("ParterScraper constructor");
+    this.url = url;
+    this.init();
+}
+
+
+ParterScraper.prototype.init = function () {
+    console.log("ParterScraper init");
+    var self = this;
+    var model;
+    self.on('loaded', function (html) {
+        model = self.scrapeEventPage(html);
+        self.emit('complete', model);
+    });
 }
 
 
 ParterScraper.prototype.getEventImage = function ($) {
-//function getEventImage($){
     var eventImage = $('img[src*="/img/item/"]').attr('src');
     if (eventImage){
         return eventImage;
@@ -19,20 +33,16 @@ ParterScraper.prototype.getEventImage = function ($) {
 };
 
 ParterScraper.prototype.getEventDescription = function ($) {
-//function getEventDescription($){
-    var eventDescription = $('p').text();
-    //console.log(eventDescription);
+    var eventDescription = $('p').text();   
     return eventDescription;
 };
 
 ParterScraper.prototype.getEventPrice = function ($) {
-//function getEventPrice($){
     var eventPrice = $('tr:nth-child(3) > td[align="center"]').first().text();
     return eventPrice;
 };
 
 ParterScraper.prototype.getEventTime = function ($) {
-//function getEventTime($){
     var eventTime = []
     $('tr:nth-child(1) > td[align="center"]').each(function(){
             var time = $(this).text();
@@ -42,9 +52,10 @@ ParterScraper.prototype.getEventTime = function ($) {
 };
 
 ParterScraper.prototype.scrapeEventPage = function (fullUrl) {
-//function scrapeEventPage(fullUrl){
+    console.log("scrapeEventPage begin");
     request(fullUrl,function(err,resp,body){
         if (!err && resp.statusCode == 200){
+            console.log("scrapeEventPage request is successfull");
             var $ = cheerio.load(body,{
                 decodeEntities: false
             });
@@ -70,8 +81,6 @@ ParterScraper.prototype.scrapeEventPage = function (fullUrl) {
             }
             console.log("scrapeEventPage",model);
 
-
-
             return model;
         }
         else{
@@ -80,8 +89,4 @@ ParterScraper.prototype.scrapeEventPage = function (fullUrl) {
     });
 };
 
-
-
-
-//nsole.log(typeof ParterScraper.run);
 module.exports = ParterScraper;
