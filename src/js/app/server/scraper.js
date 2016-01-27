@@ -1,9 +1,10 @@
 var ParterScraper = require('./scrape-parter.js');
-var DouScraper = require('./scrape-dou.js');
+var DouScraper = require('./scrape-dou.js'),
+	debug = require('debug')('bot:scraper');
 
 
 function makeScaraper(html){
-	console.log("makeScraper");
+	debug("makeScraper");
 	if (html === 'http://parter.ua'){
 		return new ParterScraper();
 	}
@@ -13,6 +14,6 @@ function makeScaraper(html){
 }
 
 module.exports = function(html){
-	console.log("scraper export");
+	debug("scraper export");
 	return makeScaraper(html);
 }
