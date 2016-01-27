@@ -9,12 +9,28 @@ var request = require('request'),
     cheerio = require('cheerio');
 
 
+
+var html2 = "http://dou.ua/calendar";
+var scraper2 = Scraper(html2);
+var douUrls = scraper2.getEventUrls(html2);
+
+
+
+/*
+var html3 = "http://dou.ua/calendar/9637/";
+var scraper2 = Scraper(html2);
+scraper2.scrapeEventPage(html3).then(function(model){
+	console.log("promised title", model);
+}, function(error) {console.log("ERROR DOU SCRAPE", error, html3);})*/
+
+/*
 var html = 'http://parter.ua';
 getMainPageUrls(html).then(function(allUrls) {
 	console.log("start for each");
     allUrls.forEach(processEventPage);
 }, function(error) {console.log("getMainPageUrls error ", error);
 });
+*/
 
 function processEventPage(url, index, array){
 	debug("processEventPage");
@@ -22,13 +38,13 @@ function processEventPage(url, index, array){
 	debug("start of model creation", fullUrl);
 	var scraper = Scraper(html);
 	scraper.scrapeEventPage(fullUrl).then(addEventToDatabase, 
-		function(error) {debug("processEventPage error ", error);
+		function(error) {debug("processEventPage error ", error, fullUrl);
 });
 };
 
 function addEventToDatabase(eventData){
-		debug("addEventToDatabase");
 	   	var parterEvent = new Model(eventData);
+	   	debug("addEventToDatabase", parterEvent.eventTitle);
 	   	parterEvent.save(function(err) {
 	       if (err) {debug('Database err saving: ' + url);}
 	   	});
