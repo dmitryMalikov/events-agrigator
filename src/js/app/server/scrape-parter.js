@@ -1,5 +1,6 @@
 // modules===========
 var request = require('request'),
+    debug = require('debug')('bot:scrape-parter'),
     cheerio = require('cheerio');
 
 
@@ -7,7 +8,7 @@ var request = require('request'),
 //separete scrapeEventPage into 2 functions
 
 function ParterScraper(){
-    console.log("ParterScraper constructor");
+    debug("ParterScraper constructor");
 }
 
 function getEventImage($) {
@@ -41,15 +42,15 @@ function getEventTime($) {
 
 
 ParterScraper.prototype.scrapeEventPage = function(fullUrl) {
-    console.log("scrapeEventPage begin");
+    debug("scrapeEventPage begin");
     var promise = new Promise(function(resolve, reject) {
     request(fullUrl,function(err,resp,body){
         if (!err && resp.statusCode == 200){
-            console.log("scrapeEventPage request is successfull");
+            debug("scrapeEventPage request is successfull");
             var $ = cheerio.load(body,{
                 decodeEntities: false
             });
-            console.log("createModel begin");
+            debug("createModel begin");
             var eventTitle, eventLocation, eventDescription, eventTime = [], 
                 eventLink, eventImage, eventPrice;
             var eventPage = $('td.center');
@@ -71,16 +72,16 @@ ParterScraper.prototype.scrapeEventPage = function(fullUrl) {
                 eventImage: eventImage
             }
             //console.log("createModel",model);
-            console.log("createModel resolve");
+            debug("createModel resolve");
             resolve(model);
         }
         else{
-            console.log("ERROR in scrapeEventPage");
+            debug("ERROR in scrapeEventPage");
             reject(err);
         }
     });
     });
-    console.log("return promise");
+    debug("return promise");
     return promise;
 };
 

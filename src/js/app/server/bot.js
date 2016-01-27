@@ -4,6 +4,7 @@ var Model = require('./model');
 var ParterScraper = require('./scrape-parter.js');
 var DouScraper = require('./scrape-dou.js');
 var request = require('request'),
+	debug = require('debug')('bot'),
     cheerio = require('cheerio');
 
 
@@ -15,26 +16,26 @@ getMainPageUrls(html).then(function(allUrls) {
 });
 
 function processEventPage(url, index, array){
-	console.log("processEventPage");
+	debug("processEventPage");
 	var fullUrl = html + url;
-	console.log("start of model creation", fullUrl);
+	debug("start of model creation", fullUrl);
 	var scraper = new ParterScraper;
 	scraper.scrapeEventPage(fullUrl).then(addEventToDatabase, 
-		function(error) {console.log("processEventPage error ", error);
+		function(error) {debug("processEventPage error ", error);
 });
 };
 
 function addEventToDatabase(eventData){
-		console.log("addEventToDatabase");
+		debug("addEventToDatabase");
 	   	var parterEvent = new Model(eventData);
 	   	parterEvent.save(function(err) {
-	       if (err) {console.log('Database err saving: ' + url);}
+	       if (err) {debug('Database err saving: ' + url);}
 	   	});
  };
 
 function getMainPageUrls(html) {
     var promise = new Promise(function(resolve, reject) {
-	    console.log("getMainPageUrls");
+	    debug("getMainPageUrls");
 	    var url, urls = [];
 	    request(html, function(err,resp, body){
 		    if (!err && resp.statusCode == 200){
@@ -43,11 +44,11 @@ function getMainPageUrls(html) {
 		            url = $(this).find('a').attr('href');
 		            urls.push(url);
 		        });   
-		        console.log("resolve", urls.length);
+		        debug("resolve", urls.length);
 		        resolve(urls);
 		    }
 		    else{
-		        console.log("ERROR in getMainPageUrls()");
+		        cdebug("ERROR in getMainPageUrls()");
 		        reject(err);
 		    }
 		});
