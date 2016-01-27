@@ -1,8 +1,9 @@
 // run scraping process
 
 var Model = require('./model');
-var ParterScraper = require('./scrape-parter.js');
-var DouScraper = require('./scrape-dou.js');
+//var ParterScraper = require('./scrape-parter.js');
+//var DouScraper = require('./scrape-dou.js');
+var Scraper = require('./scraper.js');
 var request = require('request'),
 	debug = require('debug')('bot'),
     cheerio = require('cheerio');
@@ -19,7 +20,7 @@ function processEventPage(url, index, array){
 	debug("processEventPage");
 	var fullUrl = html + url;
 	debug("start of model creation", fullUrl);
-	var scraper = new ParterScraper;
+	var scraper = Scraper(html);
 	scraper.scrapeEventPage(fullUrl).then(addEventToDatabase, 
 		function(error) {debug("processEventPage error ", error);
 });

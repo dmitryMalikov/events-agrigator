@@ -40,7 +40,6 @@ function getEventTime($) {
     return eventTime;
 };
 
-
 ParterScraper.prototype.scrapeEventPage = function(fullUrl) {
     debug("scrapeEventPage begin");
     var promise = new Promise(function(resolve, reject) {
