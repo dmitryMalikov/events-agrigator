@@ -11,5 +11,16 @@
     "angular": "~1.4.8",
     "jquery": "~2.2.0",
     "lodash": "~4.0.0"
-  }
+  },
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/libs",
+    "test",
+    "tests"
+  ]
 }
