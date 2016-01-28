@@ -1,6 +1,7 @@
 exports.findEvent = function(obj, target){
 		var finded = {};
 		var i = 1;
+		finded.find = target;
 		if(obj[target] != undefined){
 			finded[i] = obj[target];
 			i++;
@@ -14,6 +15,9 @@ exports.findEvent = function(obj, target){
 				}	
 			}
 		}
+		if(finded[1] === undefined){
+			finded.result = "No matches found!";
+		}
+
 	return finded;
-	console.log('its work!');
 }
