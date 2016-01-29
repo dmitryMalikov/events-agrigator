@@ -7,3 +7,41 @@ block content
         ul
             li(ng-repeat="item in gen.generatedList")
                 span {{item.id}}
+    
+    .white(style="padding:20px;font-size:16px" ng-controller="messageCtrl")
+        div(class="" ng-controller="StudsController as comments")
+            div(class="col" ng-repeat="stud in comments.commentsItem.event")
+                div.card   
+                    div.card-content
+                        span.card-title {{stud.title}}
+                        div(style="margin-bottom:10px") 
+                            img(src="{{stud.img}}" width="400px" height="300px")
+                        p {{stud.description}}
+                        
+        h4 Comments       
+        ul(class="comments-list" ng-controller="StudsController as comments") 
+            li(class="card" ng-repeat="stud in comments.commentsItem.comments")
+                .card-content
+                    div.chip {{stud.nameUser}}
+                    .card-content
+                        span {{stud.comment}}
+            li(class="card" ng-repeat="item in items")
+                    .card-content
+                        div.chip {{item.name}}
+                        .card-content 
+                            span {{item.message}} 
+        
+        
+        h4 Your comment    
+        .card              
+            .card-content  
+                
+                form(role="form" class="col" ng-submit="sendPost()" style="overflow:hidden")          
+                    div.input-field.col
+                        input(type="text" id="name" class="validate" placeholder="Name" ng-model="user.newName" required).
+                    div.input-field.col
+                        input(type="Email" id="email" class="validate" placeholder="Email" ng-model="user.newEmail" required).
+                    div.input-field.col
+                        textarea(id="Name" class="materialize-textarea validate" placeholder="Message" ng-model="user.newMessage" required).
+                    div.input-field.col
+                        button(type="submit" name="action" class="right btn waves-effect waves-light") Send
